@@ -35,7 +35,8 @@ public class Evaluator {
             	this.pvalue = (row & 2) >> 1; //extract the 2nd bit
             	this.qvalue = (row & 1);      //extract the 1st bit
             	Boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|%-6s|%-6s|%n", pvalue == 0, qvalue == 0, result.toString());
+            	System.out.printf("|%-6s|%-6s|", pvalue == 0, qvalue == 0);
+            	System.out.printf("%-6s|%n", result);
         		System.out.println("----------------------");
         	}
         }
@@ -46,7 +47,8 @@ public class Evaluator {
             	this.pvalue = (row & 2) >> 1; //extract the 2nd bit
             	this.svalue = (row & 1);      //extract the 1st bit
             	Boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|%-6s|%-6s|%n", pvalue == 0, svalue == 0, result.toString());
+            	System.out.printf("|%-6s|%-6s|", pvalue == 0, svalue == 0);
+            	System.out.printf("%-6s|%n", result);
         		System.out.println("----------------------");
         	}
         }
@@ -57,7 +59,8 @@ public class Evaluator {
             	this.qvalue = (row & 2) >> 1; //extract the 2nd bit
             	this.svalue = (row & 1);      //extract the 1st bit
             	Boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|%-6s|%-6s|%n", qvalue == 0, svalue == 0, result.toString());
+               	System.out.printf("|%-6s|%-6s|", qvalue == 0, svalue == 0);
+            	System.out.printf("%-6s|%n", result);
         		System.out.println("-----------------------");
         	}
         }
@@ -67,7 +70,8 @@ public class Evaluator {
         	for (int row = 0; row < 2; row++) {
             	this.pvalue = row;
             	Boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|%-6s|%n", pvalue == 0, result.toString());
+            	System.out.printf("|%-6s|", pvalue == 0);
+            	System.out.printf("%-6s|%n", result);
         		System.out.println("---------------");
         	}
         }
@@ -77,19 +81,26 @@ public class Evaluator {
         	for (int row = 0; row < 2; row++) {
             	this.qvalue = row;
             	Boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|%-6s|%n", qvalue == 0, result.toString());
+            	System.out.printf("|%-6s|", qvalue == 0);
+            	System.out.printf("%-6s|%n", result);
         		System.out.println("---------------");
         	}
         }
-        else {
+        else if (hasS == 1){
     		System.out.println("|S     |Result|");
     		System.out.println("---------------");
         	for (int row = 0; row < 2; row++) {
             	this.svalue = row;
             	Boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|%-6s|%n", svalue == 0, result.toString());
+            	System.out.printf("|%-6s|", svalue == 0);
+            	System.out.printf("%-6s|%n", result);
         		System.out.println("--------------");
         	}
+        }
+        else {
+        	Boolean result = evaluate(parseTree.root);
+        	System.out.printf("Result: ");
+        	System.out.printf("%-6s%n", result);
         }
 
 	}
@@ -129,7 +140,6 @@ public class Evaluator {
 					return evaluate(left);
 				}
 				else {
-					//System.out.println("Error happens here at <S>");
 					System.out.println("ERROR: Invalid grammar " + left.children.get(0).value + " " + right.children.get(0).value);
 					Logic.restartProgram();
 				}
@@ -146,7 +156,6 @@ public class Evaluator {
 					return evaluate(node.children.get(0));
 				}
 				else {
-					//System.out.println("Error happens here at <CS>");
 					System.out.println("ERROR: Invalid grammar " + node.children.get(0).value);
 					Logic.restartProgram();
 				}
@@ -218,11 +227,19 @@ public class Evaluator {
 						return false;
 					}
 				}
+				else if (atom.value.equals("\"TRUE\"")){
+					return true;
+					
+				}
+				else if (atom.value.equals("\"FALSE\"")){
+					return false;
+				}
 				else {
 					//System.out.println("Error happens here at <A>");
 					System.out.println("ERROR: Invalid identifier " + atom.children.get(0));
 					Logic.restartProgram();
 				}
+
 		}
 		
 		return false;
