@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Scanner;
 
 // Define the different token types
 enum tokenCategory {
@@ -28,7 +29,7 @@ class Token {
 }
 
 // Process and classify the input string based on its value
-class Scanner {
+public class Scanner1 {
 	
 	private tokenCategory gettokenCategory(String token) {
 		if(token.matches("\\b(TRUE|FALSE|NOT|AND|OR|IMPLIES|EQUIVALENT)\\b")) {
@@ -62,9 +63,16 @@ class Scanner {
 			tokens.add(new Token(category, currentToken));
 		}
 		
-		return tokens;
-						
+		return tokens;				
+	}
+	
+	public String getUserInput() {
+		Scanner scn = new Scanner(System.in);
+		
+		String input = scn.nextLine();
+		input = input.toUpperCase();
+		
+		return input;
 	}
 }
-
 

@@ -5,10 +5,12 @@ import java.util.List;
 public class Logic {
 
 	public static void main(String[] args) {
-		Scanner scanner = new Scanner();
+		Scanner1 scanner = new Scanner1();
 		Parser parser = new Parser();
 		Evaluator evaluator = new Evaluator();
-		List<Token> tokens = scanner.scan("P OR Q AND P");
+		
+		String input = scanner.getUserInput();
+		List<Token> tokens = scanner.scan(input);
 
 		/*
 		for (int i = 0; i < tokens.size(); i++) {
@@ -18,8 +20,5 @@ public class Logic {
 		
 		ParseTree parseTree = parser.getParseTree(tokens);
 		evaluator.getTruthTable(parseTree);
-		
-
 	}
-
 }

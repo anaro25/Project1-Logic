@@ -122,35 +122,71 @@ public class Parser {
     private boolean isConnective(String token) {
         return OPERATORS.contains(token);
     }
-
+    
     private boolean isAmbiguous(List<Token> tokens) {
-        Stack<String> stack = new Stack<>();
-        int lastPrecedence = -1;  
+        Stack<String> operatorStack = new Stack<>();
+        Stack<Integer> precedenceStack = new Stack<>(); // Keep track of operator precedence
 
         for (Token token : tokens) {
-            if (token.value.equals("(")) {
-                stack.push("(");
-            } else if (token.value.equals(")")) {
-                
-                while (!stack.isEmpty() && !stack.peek().equals("(")) {
-                    stack.pop();
-                }
-                if (!stack.isEmpty() && stack.peek().equals("(")) {
-                    stack.pop();
-                }
-            } else if (OPERATORS.contains(token.value)) {
-                int currentPrecedence = PRECEDENCE.get(token.value);
+            String value = token.value;
 
-                if (!stack.isEmpty() && lastPrecedence > currentPrecedence && !stack.contains("(")) {
-                    return true;  
+            if (value.equals("(")) {
+                operatorStack.push(value); // Push open parenthesis onto stack
+                precedenceStack.push(-1);  // Parenthesis has no precedence
+            } else if (value.equals(")")) {
+                // Pop operators until we reach a matching "("
+                while (!operatorStack.isEmpty() && !operatorStack.peek().equals("(")) {
+                    operatorStack.pop();
+                    precedenceStack.pop();
+                }
+                if (!operatorStack.isEmpty() && operatorStack.peek().equals("(")) {
+                    operatorStack.pop(); // Pop the matching "("
+                    precedenceStack.pop();
+                }
+            } else if (OPERATORS.contains(value)) {
+                Integer currentPrecedence = PRECEDENCE.get(value);
+
+                if (currentPrecedence == null) {
+                    System.out.println("ERROR. Unknown operator: " + value);
+                    return false;  // Or handle it as an error case
                 }
 
-                stack.push(token.value);
-                lastPrecedence = currentPrecedence;
+                if (!operatorStack.isEmpty()) {
+                    String topOperator = operatorStack.peek();
+                    Integer topPrecedence = PRECEDENCE.get(topOperator);
+
+                    // Ambiguity check based on precedence and associativity
+                    if (topPrecedence != null) {
+                        if (currentPrecedence < topPrecedence) {
+                            // Ambiguity if lower precedence operator is encountered after higher precedence operator
+                            System.out.println("ERROR. Ambiguity detected between operators: " + topOperator + " and " + value);
+                            return true;
+                        } else if (currentPrecedence == topPrecedence) {
+                            // If the operators have the same precedence, check their associativity
+                            if (isLeftAssociative(value) && isRightAssociative(topOperator)) {
+                                // Ambiguity due to conflicting associativity rules
+                                System.out.println("ERROR. Ambiguity detected between operators: " + topOperator + " and " + value);
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                // Push the current operator onto the stack
+                operatorStack.push(value);
+                precedenceStack.push(currentPrecedence);
             }
         }
 
-        return false; 
+        return false; // No ambiguity detected
+    }
+
+    private boolean isLeftAssociative(String operator) {
+        return operator.equals("AND") || operator.equals("OR");
+    }
+
+    private boolean isRightAssociative(String operator) {
+        return operator.equals("IMPLIES") || operator.equals("EQUIVALENT");
     }
 }
 

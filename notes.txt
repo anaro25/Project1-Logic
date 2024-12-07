@@ -1,0 +1,2 @@
+
+[Naming conflict] Renamed Scanner to Scanner1 since Scanner is a built-in class in java. 
