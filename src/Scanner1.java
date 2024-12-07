@@ -31,6 +31,8 @@ class Token {
 // Process and classify the input string based on its value
 public class Scanner1 {
 	
+	public boolean isScanPass = true;
+	
 	private tokenCategory gettokenCategory(String token) {
 		if(token.matches("\\b(TRUE|FALSE|NOT|AND|OR|IMPLIES|EQUIVALENT)\\b")) {
 			return tokenCategory.Keyword;
@@ -63,6 +65,8 @@ public class Scanner1 {
 			tokens.add(new Token(category, currentToken));
 		}
 		
+		isScanPass = verifyTokens(input);
+		
 		return tokens;				
 	}
 	
@@ -75,6 +79,53 @@ public class Scanner1 {
 		input = input.toUpperCase();
 		
 		return input;
+	}
+	
+	private String[] getTokens(String input) {
+	   StringBuilder spacedInput = new StringBuilder();
+
+	   	// Add spaces around parentheses
+	   	for (char currentChar : input.toCharArray()) {
+	      	if (currentChar == '(' || currentChar == ')') {
+	         	spacedInput.append(" ").append(currentChar).append(" ");
+	      	}
+	      	else {
+	         	spacedInput.append(currentChar);
+	      	}
+	   	}
+
+	   // now, all tokens are separated by a space
+	   String[] tokens = spacedInput.toString().trim().split("\\s+");
+
+	   return tokens;
+	}
+	
+	private boolean verifyTokens(String input) {
+		String[] tokens = getTokens(input);
+		
+	    String[] validTokens = {
+	        "TRUE", "FALSE", "P", "Q", "S", "(", ")", "NOT", "AND", "OR", "IMPLIES",
+	        "EQUIVALENT"
+	    };
+
+	    for (String token : tokens) {
+	        boolean foundMatch = false;
+
+	        // Check if the token is valid
+	        for (String validToken : validTokens) {
+	            if (token.equals(validToken)) {
+	                foundMatch = true;
+	                break;  // Exit the inner loop as we've found a match
+	            }
+	        }
+	        
+	        if (!foundMatch) {
+	        	System.out.println("ERROR. Unknown token: " + token);
+	        	return false;
+	        }
+	    }
+
+	    return true;
 	}
 }
 
