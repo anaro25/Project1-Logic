@@ -1,3 +1,5 @@
+package machineProject;
+
 import java.util.*;
 
 public class Parser {
@@ -30,7 +32,7 @@ public class Parser {
         tree.root = parse_S();
 
         if (this.index != tokens.size()) {
-            System.out.println("ERROR. Unexpected token between " + tokens.get(this.index - 1).value + " and " + tokens.get(this.index).value);
+            System.out.println("ERROR. Unexpected token between " + tokens.get(this.index-1).value + " and " + tokens.get(this.index).value);
             this.isParsePass = false;
         }
 
@@ -123,14 +125,13 @@ public class Parser {
 
     private boolean isAmbiguous(List<Token> tokens) {
         Stack<String> stack = new Stack<>();
-        List<String> lastOperator = new ArrayList<>();
-    
-        for (int i = 0; i < tokens.size(); i++) {
-            Token token = tokens.get(i);
-    
+        int lastPrecedence = -1;  
+
+        for (Token token : tokens) {
             if (token.value.equals("(")) {
                 stack.push("(");
             } else if (token.value.equals(")")) {
+                
                 while (!stack.isEmpty() && !stack.peek().equals("(")) {
                     stack.pop();
                 }
@@ -138,20 +139,19 @@ public class Parser {
                     stack.pop();
                 }
             } else if (OPERATORS.contains(token.value)) {
-                if (!stack.isEmpty() && OPERATORS.contains(stack.peek())) {
-                    String prevOperator = stack.peek();
-                    if (PRECEDENCE.get(prevOperator) < PRECEDENCE.get(token.value)) {
-                        return true; 
-                    }
+                int currentPrecedence = PRECEDENCE.get(token.value);
+
+                if (!stack.isEmpty() && lastPrecedence > currentPrecedence && !stack.contains("(")) {
+                    return true;  
                 }
-                lastOperator.add(token.value);
+
                 stack.push(token.value);
+                lastPrecedence = currentPrecedence;
             }
         }
-    
-        return false;
+
+        return false; 
     }
-    
 }
 
 class ParseTree {
@@ -182,13 +182,5 @@ class Node {
         for (Node child : children) {
             child.print(indent + "  ");
         }
-    }
-}
-
-class Token {
-    String value;
-
-    public Token(String value) {
-        this.value = value;
     }
 }
