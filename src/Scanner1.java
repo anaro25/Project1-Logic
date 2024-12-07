@@ -69,6 +69,8 @@ public class Scanner1 {
 	public String getUserInput() {
 		Scanner scn = new Scanner(System.in);
 		
+		System.out.print("Input -> ");
+		
 		String input = scn.nextLine();
 		input = input.toUpperCase();
 		

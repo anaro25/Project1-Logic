@@ -125,68 +125,66 @@ public class Parser {
     
     private boolean isAmbiguous(List<Token> tokens) {
         Stack<String> operatorStack = new Stack<>();
-        Stack<Integer> precedenceStack = new Stack<>(); // Keep track of operator precedence
+        int lastPrecedence = -1; // Keep track of the last operator precedence
 
         for (Token token : tokens) {
             String value = token.value;
 
             if (value.equals("(")) {
                 operatorStack.push(value); // Push open parenthesis onto stack
-                precedenceStack.push(-1);  // Parenthesis has no precedence
             } else if (value.equals(")")) {
                 // Pop operators until we reach a matching "("
                 while (!operatorStack.isEmpty() && !operatorStack.peek().equals("(")) {
                     operatorStack.pop();
-                    precedenceStack.pop();
                 }
                 if (!operatorStack.isEmpty() && operatorStack.peek().equals("(")) {
                     operatorStack.pop(); // Pop the matching "("
-                    precedenceStack.pop();
                 }
             } else if (OPERATORS.contains(value)) {
                 Integer currentPrecedence = PRECEDENCE.get(value);
 
+                // Check if the operator exists in the precedence map
                 if (currentPrecedence == null) {
                     System.out.println("ERROR. Unknown operator: " + value);
                     return false;  // Or handle it as an error case
                 }
 
+                // Check for ambiguity based on precedence and associativity
                 if (!operatorStack.isEmpty()) {
                     String topOperator = operatorStack.peek();
                     Integer topPrecedence = PRECEDENCE.get(topOperator);
 
-                    // Ambiguity check based on precedence and associativity
-                    if (topPrecedence != null) {
-                        if (currentPrecedence < topPrecedence) {
-                            // Ambiguity if lower precedence operator is encountered after higher precedence operator
-                            System.out.println("ERROR. Ambiguity detected between operators: " + topOperator + " and " + value);
-                            return true;
-                        } else if (currentPrecedence == topPrecedence) {
-                            // If the operators have the same precedence, check their associativity
-                            if (isLeftAssociative(value) && isRightAssociative(topOperator)) {
-                                // Ambiguity due to conflicting associativity rules
-                                System.out.println("ERROR. Ambiguity detected between operators: " + topOperator + " and " + value);
-                                return true;
-                            }
-                        }
+                    // Check for ambiguity if precedence order is violated
+                    if (topPrecedence != null && currentPrecedence <= topPrecedence) {
+                        return true;
                     }
                 }
 
                 // Push the current operator onto the stack
                 operatorStack.push(value);
-                precedenceStack.push(currentPrecedence);
             }
         }
 
         return false; // No ambiguity detected
     }
-
-    private boolean isLeftAssociative(String operator) {
-        return operator.equals("AND") || operator.equals("OR");
-    }
-
-    private boolean isRightAssociative(String operator) {
-        return operator.equals("IMPLIES") || operator.equals("EQUIVALENT");
+    
+    public void additionalAmbiguityCheck(List<Token> tokens) {
+        String[] connectives = {"AND","OR","IMPLIES","EQUIVALENT"};
+        int connectivesCtr = 0;
+        int parenthesisPairCtr = 0;
+        
+        for (Token token : tokens) {
+            if (Arrays.asList(connectives).contains(token.value)) {
+                connectivesCtr++;
+            }
+            if (token.value.equals("(")) {
+                parenthesisPairCtr++;
+            }
+        }
+        
+        if (connectivesCtr >= parenthesisPairCtr + 1) {
+            System.out.println("ERROR. Ambiguity detected.");
+        }
     }
 }
 

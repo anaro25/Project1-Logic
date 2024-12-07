@@ -19,6 +19,7 @@ public class Logic {
 		}*/
 		
 		ParseTree parseTree = parser.getParseTree(tokens);
+		parser.additionalAmbiguityCheck(tokens);
 		evaluator.getTruthTable(parseTree);
 	}
 }
