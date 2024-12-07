@@ -31,8 +31,6 @@ class Token {
 // Process and classify the input string based on its value
 public class Scanner1 {
 	
-	public boolean isScanPass = true;
-	
 	private tokenCategory gettokenCategory(String token) {
 		if(token.matches("\\b(TRUE|FALSE|NOT|AND|OR|IMPLIES|EQUIVALENT)\\b")) {
 			return tokenCategory.Keyword;
@@ -52,6 +50,8 @@ public class Scanner1 {
 	// Scan the input string and tokenize into list of tokens
 	public List<Token> scan(String input) {
 		List<Token> tokens = new ArrayList<>();
+		
+		verifyTokens(input);
 
 		// Match valid tokens based on grammar
 		String regex = "\\(|\\)|\\bP\\b|\\bQ\\b|\\bS\\b|\\bTRUE\\b|\\bFALSE\\b|\\bNOT\\b|\\bAND\\b|\\bOR\\b|\\bIMPLIES\\b|\\bEQUIVALENT\\b";
@@ -65,15 +65,13 @@ public class Scanner1 {
 			tokens.add(new Token(category, currentToken));
 		}
 		
-		isScanPass = verifyTokens(input);
-		
-		return tokens;				
+		return tokens;		
 	}
 	
 	public String getUserInput() {
 		Scanner scn = new Scanner(System.in);
 		
-		System.out.print("Input -> ");
+		System.out.print("\nInput -> ");
 		
 		String input = scn.nextLine();
 		input = input.toUpperCase();
@@ -100,7 +98,7 @@ public class Scanner1 {
 	   return tokens;
 	}
 	
-	private boolean verifyTokens(String input) {
+	private void verifyTokens(String input) {
 		String[] tokens = getTokens(input);
 		
 	    String[] validTokens = {
@@ -121,11 +119,9 @@ public class Scanner1 {
 	        
 	        if (!foundMatch) {
 	        	System.out.println("ERROR. Unknown token: " + token);
-	        	return false;
+	        	Logic.restartProgram();
 	        }
 	    }
-
-	    return true;
 	}
 }
 

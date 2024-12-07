@@ -16,16 +16,14 @@ public class Parser {
 
     private List<Token> tokens;
     private int index;
-    public boolean isParsePass = true;
 
     public ParseTree getParseTree(List<Token> tokens) {
         this.tokens = tokens;
         this.index = 0;
-        this.isParsePass = true; 
 
         if (isAmbiguous(tokens)) {
             System.out.println("ERROR. Ambiguity detected in the input tokens.");
-            this.isParsePass = false;
+            Logic.restartProgram();
         }
 
         ParseTree tree = new ParseTree();
@@ -33,7 +31,7 @@ public class Parser {
 
         if (this.index != tokens.size()) {
             System.out.println("ERROR. Unexpected token between " + tokens.get(this.index-1).value + " and " + tokens.get(this.index).value);
-            this.isParsePass = false;
+            Logic.restartProgram();
         }
 
         return tree;
@@ -73,7 +71,7 @@ public class Parser {
                 this.index++;
             } else {
                 System.out.println("ERROR. Expected ')'");
-                isParsePass = false;
+                Logic.restartProgram();
             }
         } else if (this.index < tokens.size() && tokens.get(this.index).value.equals("NOT")) {
             csNode.addChild(new Node("NOT"));
@@ -94,7 +92,8 @@ public class Parser {
             return aNode;
         } else {
             System.out.println("ERROR. Missing atomic sentence.");
-            isParsePass = false;
+            Logic.restartProgram();
+            
             Node placeHolder = new Node("");
             return placeHolder;
         }
@@ -108,7 +107,8 @@ public class Parser {
             return cNode;
         } else {
             System.out.println("ERROR. Missing connective.");
-            isParsePass = false;
+            Logic.restartProgram();
+            
             Node placeHolder = new Node("");
             return placeHolder;
         }
@@ -146,6 +146,8 @@ public class Parser {
                 // Check if the operator exists in the precedence map
                 if (currentPrecedence == null) {
                     System.out.println("ERROR. Unknown operator: " + value);
+                    Logic.restartProgram();
+                    
                     return false;  // Or handle it as an error case
                 }
 
@@ -182,8 +184,9 @@ public class Parser {
             }
         }
         
-        if (connectivesCtr >= parenthesisPairCtr + 1) {
+        if (connectivesCtr >= parenthesisPairCtr + 2) {
             System.out.println("ERROR. Ambiguity detected.");
+            Logic.restartProgram();
         }
     }
 }

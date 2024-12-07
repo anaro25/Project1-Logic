@@ -96,7 +96,6 @@ public class Evaluator {
 		
 		switch(node.value) {
 		
-		
 			case "<S>":
 				Node left = node.children.get(0); //<CS>
 				Node right = node.children.get(1); //<S'>
@@ -121,6 +120,7 @@ public class Evaluator {
 					}
 					else {
 						System.out.println("ERROR: Invalid grammar " + left.value + " " + connector.value + " " + right.value);
+						Logic.restartProgram();
 					}
 				}
 				else if (connector.value.equals("ε")){
@@ -129,6 +129,7 @@ public class Evaluator {
 				else {
 					//System.out.println("Error happens here at <S>");
 					System.out.println("ERROR: Invalid grammar " + left.children.get(0).value + " " + right.children.get(0).value);
+					Logic.restartProgram();
 				}
 				
 				
@@ -145,6 +146,7 @@ public class Evaluator {
 				else {
 					//System.out.println("Error happens here at <CS>");
 					System.out.println("ERROR: Invalid grammar " + node.children.get(0).value);
+					Logic.restartProgram();
 				}
 					
 
@@ -172,6 +174,7 @@ public class Evaluator {
 					}
 					else {
 						System.out.println("ERROR: Invalid grammar " + left_prime.value + " " + connector_prime.value + " " + right_prime.value);
+						Logic.restartProgram();
 					}
 				}
 				else if (connector_prime.value.equals("ε")){
@@ -180,6 +183,7 @@ public class Evaluator {
 				else {
 					//System.out.println("Error happens here at <S'>");
 					System.out.println("ERROR: Invalid grammar " + left_prime.children.get(0).value + " " + right_prime.children.get(0).value);
+					Logic.restartProgram();
 				}
 				
 			case "<A>":
@@ -215,8 +219,8 @@ public class Evaluator {
 				else {
 					//System.out.println("Error happens here at <A>");
 					System.out.println("ERROR: Invalid identifier " + atom.children.get(0));
+					Logic.restartProgram();
 				}
-
 		}
 		
 		return false;
