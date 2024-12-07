@@ -11,6 +11,8 @@ public class Evaluator {
 	
 	public void getTruthTable(ParseTree parseTree) {
 		
+		System.out.println();
+		
 		evaluate(parseTree.root); //evaluate once muna, to check for the existence of p, q, and s
 		
         if (hasP == 1 && hasQ == 1 && hasS == 1) {
