@@ -8,7 +8,8 @@ public class Logic {
 		Scanner scanner = new Scanner();
 		Parser parser = new Parser();
 		Evaluator evaluator = new Evaluator();
-		List<Token> tokens = scanner.scan("(P OR Q) AND NOT Q");
+		List<Token> tokens = scanner.scan("P OR Q AND P");
+
 		/*
 		for (int i = 0; i < tokens.size(); i++) {
 			Token token = tokens.get(i);
