@@ -15,93 +15,93 @@ public class Evaluator {
 		
 		evaluate(parseTree.root); //evaluate once muna, to check for the existence of p, q, and s
 		
-        if (hasP == 1 && hasQ == 1 && hasS == 1) {
-    		System.out.println("|P     |Q     |S     |Result|");
-    		System.out.println("-----------------------------");
-        	for (int row = 0; row < 8; row++) {
-            	this.pvalue = (row & 4) >> 2; //extract the 3rd bit
-            	this.qvalue = (row & 2) >> 1; //extract the 2nd bit
-            	this.svalue = (row & 1);      //extract the 1st bit
-            	boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|%-6s|%-6s|", pvalue == 0, qvalue == 0, svalue == 0);
-            	System.out.printf("%-6s|%n", result);
-        		System.out.println("-----------------------------");
-        	}
-        }
-        else if (hasP == 1 && hasQ == 1) {
-    		System.out.println("|P     |Q     |Result|");
-    		System.out.println("----------------------");
-        	for (int row = 0; row < 4; row++) {
-            	this.pvalue = (row & 2) >> 1; //extract the 2nd bit
-            	this.qvalue = (row & 1);      //extract the 1st bit
-            	Boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|%-6s|", pvalue == 0, qvalue == 0);
-            	System.out.printf("%-6s|%n", result);
-        		System.out.println("----------------------");
-        	}
-        }
-        else if (hasP == 1 && hasS == 1) {
-    		System.out.println("|P     |S     |Result|");
-    		System.out.println("----------------------");
-        	for (int row = 0; row < 4; row++) {
-            	this.pvalue = (row & 2) >> 1; //extract the 2nd bit
-            	this.svalue = (row & 1);      //extract the 1st bit
-            	Boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|%-6s|", pvalue == 0, svalue == 0);
-            	System.out.printf("%-6s|%n", result);
-        		System.out.println("----------------------");
-        	}
-        }
-        else if (hasQ == 1 && hasS == 1) {
-    		System.out.println("|Q     |S     |Result|");
-    		System.out.println("----------------------");
-        	for (int row = 0; row < 4; row++) {
-            	this.qvalue = (row & 2) >> 1; //extract the 2nd bit
-            	this.svalue = (row & 1);      //extract the 1st bit
-            	Boolean result = evaluate(parseTree.root);
-               	System.out.printf("|%-6s|%-6s|", qvalue == 0, svalue == 0);
-            	System.out.printf("%-6s|%n", result);
-        		System.out.println("-----------------------");
-        	}
-        }
-        else if (hasP == 1) {
-    		System.out.println("|P     |Result|");
-    		System.out.println("---------------");
-        	for (int row = 0; row < 2; row++) {
-            	this.pvalue = row;
-            	Boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|", pvalue == 0);
-            	System.out.printf("%-6s|%n", result);
-        		System.out.println("---------------");
-        	}
-        }
-        else if (hasQ == 1) {
-    		System.out.println("|Q     |Result|");
-    		System.out.println("---------------");
-        	for (int row = 0; row < 2; row++) {
-            	this.qvalue = row;
-            	Boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|", qvalue == 0);
-            	System.out.printf("%-6s|%n", result);
-        		System.out.println("---------------");
-        	}
-        }
-        else if (hasS == 1){
-    		System.out.println("|S     |Result|");
-    		System.out.println("---------------");
-        	for (int row = 0; row < 2; row++) {
-            	this.svalue = row;
-            	Boolean result = evaluate(parseTree.root);
-            	System.out.printf("|%-6s|", svalue == 0);
-            	System.out.printf("%-6s|%n", result);
-        		System.out.println("--------------");
-        	}
-        }
-        else {
-        	Boolean result = evaluate(parseTree.root);
-        	System.out.printf("Result: ");
-        	System.out.printf("%-6s%n", result);
-        }
+		if (hasP == 1 && hasQ == 1 && hasS == 1) {
+			System.out.println("|P     |Q     |S     |Result|");
+			System.out.println("-----------------------------");
+			for (int row = 0; row < 8; row++) {
+				this.pvalue = (row & 4) >> 2; //extract the 3rd bit
+				this.qvalue = (row & 2) >> 1; //extract the 2nd bit
+				this.svalue = (row & 1);      //extract the 1st bit
+				boolean result = evaluate(parseTree.root);
+				System.out.printf("|%-6s|%-6s|%-6s|", pvalue == 0, qvalue == 0, svalue == 0);
+				System.out.printf("%-6s|%n", result);
+				System.out.println("-----------------------------");
+			}
+		}
+		else if (hasP == 1 && hasQ == 1) {
+			System.out.println("|P     |Q     |Result|");
+			System.out.println("----------------------");
+			for (int row = 0; row < 4; row++) {
+				this.pvalue = (row & 2) >> 1; //extract the 2nd bit
+				this.qvalue = (row & 1);      //extract the 1st bit
+				Boolean result = evaluate(parseTree.root);
+				System.out.printf("|%-6s|%-6s|", pvalue == 0, qvalue == 0);
+				System.out.printf("%-6s|%n", result);
+				System.out.println("----------------------");
+			}
+		}
+		else if (hasP == 1 && hasS == 1) {
+			System.out.println("|P     |S     |Result|");
+			System.out.println("----------------------");
+			for (int row = 0; row < 4; row++) {
+				this.pvalue = (row & 2) >> 1; //extract the 2nd bit
+				this.svalue = (row & 1);      //extract the 1st bit
+				Boolean result = evaluate(parseTree.root);
+				System.out.printf("|%-6s|%-6s|", pvalue == 0, svalue == 0);
+				System.out.printf("%-6s|%n", result);
+				System.out.println("----------------------");
+			}
+		}
+		else if (hasQ == 1 && hasS == 1) {
+			System.out.println("|Q     |S     |Result|");
+			System.out.println("----------------------");
+			for (int row = 0; row < 4; row++) {
+				this.qvalue = (row & 2) >> 1; //extract the 2nd bit
+				this.svalue = (row & 1);      //extract the 1st bit
+				Boolean result = evaluate(parseTree.root);
+				System.out.printf("|%-6s|%-6s|", qvalue == 0, svalue == 0);
+				System.out.printf("%-6s|%n", result);
+				System.out.println("-----------------------");
+			}
+		}
+		else if (hasP == 1) {
+			System.out.println("|P     |Result|");
+			System.out.println("---------------");
+			for (int row = 0; row < 2; row++) {
+				this.pvalue = row;
+				Boolean result = evaluate(parseTree.root);
+				System.out.printf("|%-6s|", pvalue == 0);
+				System.out.printf("%-6s|%n", result);
+				System.out.println("---------------");
+			}
+		}
+		else if (hasQ == 1) {
+			System.out.println("|Q     |Result|");
+			System.out.println("---------------");
+			for (int row = 0; row < 2; row++) {
+				this.qvalue = row;
+				Boolean result = evaluate(parseTree.root);
+				System.out.printf("|%-6s|", qvalue == 0);
+				System.out.printf("%-6s|%n", result);
+				System.out.println("---------------");
+			}
+		}
+		else if (hasS == 1){
+			System.out.println("|S     |Result|");
+			System.out.println("---------------");
+			for (int row = 0; row < 2; row++) {
+				this.svalue = row;
+				Boolean result = evaluate(parseTree.root);
+				System.out.printf("|%-6s|", svalue == 0);
+				System.out.printf("%-6s|%n", result);
+				System.out.println("--------------");
+			}
+		}
+		else {
+			Boolean result = evaluate(parseTree.root);
+			System.out.printf("Result: ");
+			System.out.printf("%-6s%n", result);
+		}
 
 	}
 	

@@ -82,15 +82,15 @@ public class Scanner1 {
 	private String[] getTokens(String input) {
 	   StringBuilder spacedInput = new StringBuilder();
 
-	   	// Add spaces around parentheses
-	   	for (char currentChar : input.toCharArray()) {
-	      	if (currentChar == '(' || currentChar == ')') {
-	         	spacedInput.append(" ").append(currentChar).append(" ");
-	      	}
-	      	else {
-	         	spacedInput.append(currentChar);
-	      	}
-	   	}
+		// Add spaces around parentheses
+		for (char currentChar : input.toCharArray()) {
+			if (currentChar == '(' || currentChar == ')') {
+				spacedInput.append(" ").append(currentChar).append(" ");
+			}
+			else {
+				spacedInput.append(currentChar);
+			}
+		}
 
 	   // now, all tokens are separated by a space
 	   String[] tokens = spacedInput.toString().trim().split("\\s+");
@@ -101,27 +101,27 @@ public class Scanner1 {
 	private void verifyTokens(String input) {
 		String[] tokens = getTokens(input);
 		
-	    String[] validTokens = {
-	        "TRUE", "FALSE", "P", "Q", "S", "(", ")", "NOT", "AND", "OR", "IMPLIES",
-	        "EQUIVALENT"
-	    };
+		String[] validTokens = {
+			"TRUE", "FALSE", "P", "Q", "S", "(", ")", "NOT", "AND", "OR", "IMPLIES",
+			"EQUIVALENT"
+		};
 
-	    for (String token : tokens) {
-	        boolean foundMatch = false;
+		for (String token : tokens) {
+			boolean foundMatch = false;
 
-	        // Check if the token is valid
-	        for (String validToken : validTokens) {
-	            if (token.equals(validToken)) {
-	                foundMatch = true;
-	                break;  // Exit the inner loop as we've found a match
-	            }
-	        }
-	        
-	        if (!foundMatch) {
-	        	System.out.println("ERROR. Unknown token: " + token);
-	        	Logic.restartProgram();
-	        }
-	    }
+			// Check if the token is valid
+			for (String validToken : validTokens) {
+				if (token.equals(validToken)) {
+					foundMatch = true;
+					break;  // Exit the inner loop as we've found a match
+				}
+			}
+			
+			if (!foundMatch) {
+				System.out.println("ERROR. Unknown token: " + token);
+				Logic.restartProgram();
+			}
+		}
 	}
 }
 

@@ -26,6 +26,6 @@ public class Logic {
 	}
 	
 	public static void restartProgram() {    
-     	mainLoop();
+		mainLoop();
 	}
 }
